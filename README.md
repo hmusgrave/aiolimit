@@ -15,7 +15,7 @@ import asyncio, aiolimit
 async def some_remote_call():
     return 1
 
-rps = 150
+rps = 1500
 buffer = 100
 
 async def main():
