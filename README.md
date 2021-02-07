@@ -5,7 +5,7 @@ A client-side rate limiter to avoid remote penalties
 ## Installation
 
 ```bash
-python -m pip install -e git+https://github.com/hmusgrave/aiolimit.git
+python -m pip install -e git+https://github.com/hmusgrave/aiolimit.git#egg=aiolimit
 ```
 
 ## Examples
@@ -17,9 +17,9 @@ async def some_remote_call():
 
 rps = 150
 buffer = 100
-limiter = aiolimit.Limiter(buffer/rps, buffer)
 
 async def main():
+    limiter = aiolimit.Limiter(buffer/rps, buffer)
     for _ in range(1000):
         result = await limiter.run(some_remote_call())
 
