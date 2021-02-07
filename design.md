@@ -49,14 +49,13 @@ immediately).
    would not be recorded in the same window by the remote system.
 3. Let us consider an acknowledged event -- one where at some true timestamp
    `ts` we recorded that the event had round-tripped. The actual time the event
-   was recorded was no later than `ts-rtl`. As such, if `ts-rtl <=
-   now+ltr-(w+rr)/(1-1e-6*re)` then that event would definitely not be recorded
-   in the same window as any newly dispatched event.
+   was recorded was no later than `ts-rtl`. As such, if `ts-rtl <= now+ltr-(w+rr)/(1-1e-6*re)`
+   then that event would definitely not be recorded in the same window as any
+   newly dispatched event.
 4. The challenge then is to translate true times to locally measured clock
-   signals. Re-writing the above equation, we have `now >= ts
-   + (w+rr)/(1-1e-6*re) - rtl - ltr`. This is simply saying that a true-time
-   gap of `(w+rr)/(1-1e-6*re)-rtl-ltr` must occur, and given that we have
-   available to use an error rate for local clock measurements we can bound
+   signals. Re-writing the above equation, we have `now >= ts + (w+rr)/(1-1e-6*re) - rtl - ltr`.
+   This is simply saying that a true-time gap of `(w+rr)/(1-1e-6*re)-rtl-ltr` must occur,
+   and given that we have available to use an error rate for local clock measurements we can bound
    that gap in local time to `[(w+rr)/(1-1e-6*re)-rtl-ltr]*(1+1e-6*le)`, so
    long as measurements are confined to the same position in a local clock
    tick. However, due to the discrete nature of the local clock, waiting till
