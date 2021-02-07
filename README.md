@@ -28,8 +28,8 @@ print(asyncio.run(main()))
 
 ## Design Choices
 - Issuing a sequence of calls causing the remote system to invoke rate limiting
-  is unacceptable. In practice, we are at the mercy of machine designers, so we
-  provide extremely conservative estimates for hardware capabilities rather
+  is unacceptable. In practice, we are at the mercy of machine designers, so by default
+  we provide extremely conservative estimates for hardware capabilities rather
   than requiring an excessive amount of specialized knowledge at the outset.
 - The authors' envisioned use case is calling a remote http API, where a few
   dozen thousand requests per second per core is more than acceptable. Higher
