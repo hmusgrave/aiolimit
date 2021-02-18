@@ -1,8 +1,8 @@
-import asyncio, time
+import asyncio, time, warnings
 
 class Limiter:
     def __init__(self, w, n, rr=.016,
-            lr=time.get_clock_info('monotonic').resolution, re=250, le=250,
+            lr=None, re=250, le=250,
             rtl=0, ltr=0):
         """
         Locally rate-limits so that remote limits cannot be exceeded
@@ -17,7 +17,8 @@ class Limiter:
             remote clock resolution (in remote time) -- typically 15.6ms for
             Windows and <=1ns for Linux; if unsure, err on the side of larger
             values
-        lr : float (seconds). Default time.get_clock_info('monotonic').resolution. Range [0, infinity)
+        lr : float (seconds). Default loop._clock_resolution, falling back to
+            time.get_clock_info('monotonic').resolution. Range [0, infinity)
             local clock resolution (in local time) -- typically 15.6ms for
             Windows and <=1ns for Linux; if unsure, err on the side of larger
             values
@@ -63,6 +64,15 @@ class Limiter:
         # event who had its local time recorded as `ts` then that event
         # cannot cohabitate any w-width time window with a newly dispatched
         # event as far as the remote monotonic clock is concerned
+        if lr is None:
+            try:
+                lr = asyncio.get_running_loop()._clock_resolution
+            except AttributeError:
+                warnings.warn('Event loop does not provide _clock_resolution, '\
+                'falling back to time.get_clock_info("monotonic") and assuming '\
+                'the event loop has a resolution no worse than the system\'s '\
+                'monotonic clock')
+                lr = time.get_clock_info('monotonic').resolution
         self.gap = ((w+rr)/(1-1e-6*re)-rtl-ltr)*(1+1e-6*le)+lr
 
         self.waiting = asyncio.Queue()
