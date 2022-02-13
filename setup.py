@@ -13,9 +13,7 @@ setuptools.setup(
     long_description=long_description(),
     long_description_content_type='text/markdown',
     url='https://github.com/hmusgrave/aioimit',
-    py_modules=[
-        'aioimit',
-    ],
+    packages = ['aiolimit'],
     python_requires='>=3.6',
     test_suite='test_aioimit',
     classifiers=[
